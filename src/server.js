@@ -3,6 +3,9 @@ import pino from 'pino-http';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { env } from './utils/env.js';
+import { ENV_VARS } from './constants/index.js';
+import { errorHandlerMiddleware } from './middlewares/errorHandlerMiddleware.js';
+import { notFoundMiddleware } from './middlewares/notFoundMiddleware.js';
 
 dotenv.config();
 
@@ -27,15 +30,11 @@ export const startServer = () => {
     next(new Error('some error here'));
   });
 
-  app.use((req, res) => {
-    res.status(404).send('Oops! Route was not found!');
-  });
+  app.use(notFoundMiddleware);
 
-  app.use((error, req, res) => {
-    res.status(500).send(error.message);
-  });
+  app.use(errorHandlerMiddleware);
 
-  const PORT = env('PORT', 3000);
+  const PORT = env(ENV_VARS.PORT, 3000);
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}!`);
   });
