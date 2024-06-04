@@ -35,6 +35,15 @@ export const startServer = () => {
   });
   app.get('/students/:studentId', async (req, res) => {
     const student = await getStudentById(req.params.studentId);
+
+    if (!student) {
+      return res.status(404).json({
+        status: 404,
+        message: `Student with id: ${req.params.studentId} not found!`,
+      });
+    }
+    
+
     res.json({
       status: 200,
       message: `Successfully got a student with ${req.params.studentId}`,
