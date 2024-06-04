@@ -6,6 +6,7 @@ import { ENV_VARS } from './constants/index.js';
 import { errorHandlerMiddleware } from './middlewares/errorHandlerMiddleware.js';
 import { notFoundMiddleware } from './middlewares/notFoundMiddleware.js';
 import { getAllStudents, getStudentById } from './services/students.js';
+import { isValidObjectId } from 'mongoose';
 
 export const startServer = () => {
   const app = express();
@@ -34,20 +35,31 @@ export const startServer = () => {
     });
   });
   app.get('/students/:studentId', async (req, res) => {
-    const student = await getStudentById(req.params.studentId);
+    const id = req.params.studentId;
 
-    if (!student) {
-      return res.status(404).json({
-        status: 404,
-        message: `Student with id: ${req.params.studentId} not found!`,
-      });
+    if (isValidObjectId(id)) {
+      try {
+        const student = await getStudentById(id);
+        if (!student) {
+          return res.status(404).json({
+            status: 404,
+            message: `Student with id: ${id} not found!`,
+          });
+        }
+
+        return res.json({
+          status: 200,
+          message: `Successfully got a student with ${req.params.studentId}`,
+          data: student,
+        });
+      } catch (err) {
+        console.log(err);
+      }
     }
-    
 
-    res.json({
-      status: 200,
-      message: `Successfully got a student with ${req.params.studentId}`,
-      data: student,
+    return res.json({
+      status: 404,
+      message: `ID: ${id} is not valid!`,
     });
   });
 
