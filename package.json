@@ -6,8 +6,8 @@
   "main": "src/index.js",
   "scripts": {
     "lint": "eslint src/**/*.js",
-    "start": "nodemon src/index.js",
-    "dev": "node ./src/index.js"
+    "start": "node ./src/index.js",
+    "dev": "nodemon src/index.js"
   },
   "keywords": [],
   "author": "Alexander Repeta <a.repeta@goit.global>",
