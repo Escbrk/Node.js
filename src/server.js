@@ -5,7 +5,7 @@ import { env } from './utils/env.js';
 import { ENV_VARS } from './constants/index.js';
 import { errorHandlerMiddleware } from './middlewares/errorHandlerMiddleware.js';
 import { notFoundMiddleware } from './middlewares/notFoundMiddleware.js';
-import { getAllStudents } from './services/students.js';
+import { getAllStudents, getStudentById } from './services/students.js';
 
 export const startServer = () => {
   const app = express();
@@ -33,7 +33,14 @@ export const startServer = () => {
       data: students,
     });
   });
-  app.get('/students/:studentId', (req, res, next) => {});
+  app.get('/students/:studentId', async (req, res) => {
+    const student = await getStudentById(req.params.studentId);
+    res.json({
+      status: 200,
+      message: `Successfully got a student with ${req.params.studentId}`,
+      data: student,
+    });
+  });
 
   app.use('*', notFoundMiddleware);
 
