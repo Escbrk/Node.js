@@ -3,5 +3,5 @@ import { startServer } from './server.js';
 
 (async () => {
   await initMongoConnection();
-  await startServer();
+  startServer();
 })();

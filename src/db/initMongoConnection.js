@@ -11,7 +11,10 @@ export const initMongoConnection = async () => {
 
   try {
     await mongoose.connect(connectionLink);
+    console.log('Successfully conected!');
   } catch (err) {
     console.log(err);
+    // process.exit(1)
+    throw err;
   }
 };

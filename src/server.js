@@ -5,6 +5,7 @@ import { env } from './utils/env.js';
 import { ENV_VARS } from './constants/index.js';
 import { errorHandlerMiddleware } from './middlewares/errorHandlerMiddleware.js';
 import { notFoundMiddleware } from './middlewares/notFoundMiddleware.js';
+import { getAllStudents } from './services/students.js';
 
 export const startServer = () => {
   const app = express();
@@ -24,17 +25,15 @@ export const startServer = () => {
   //   console.log(`Login time: ${new Date().toLocaleString()}`);
   //   next();
   // });
-
-  app.get('/', (req, res) => {
-    // res.send('Hello world!');
+  app.get('/students', async (req, res) => {
+    const students = await getAllStudents();
     res.json({
-      message: 'Hello World!',
+      status: 200,
+      message: 'Successfully got all students',
+      data: students,
     });
   });
-
-  app.get('/error', (req, res, next) => {
-    next(new Error('some error here'));
-  });
+  app.get('/students/:studentId', (req, res, next) => {});
 
   app.use('*', notFoundMiddleware);
 
@@ -46,4 +45,3 @@ export const startServer = () => {
     console.log(`Login time: ${new Date().toLocaleString()}`);
   });
 };
-
