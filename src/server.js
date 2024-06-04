@@ -43,13 +43,13 @@ export const startServer = () => {
         if (!student) {
           return res.status(404).json({
             status: 404,
-            message: `Student with id: ${id} not found!`,
+            message: `Student with ID: "${id}" not found!`,
           });
         }
 
         return res.json({
           status: 200,
-          message: `Successfully got a student with ${req.params.studentId}`,
+          message: `Successfully got a student with ID: "${id}"`,
           data: student,
         });
       } catch (err) {
