@@ -34,6 +34,7 @@ export const startServer = () => {
       data: students,
     });
   });
+  
   app.get('/students/:studentId', async (req, res) => {
     const id = req.params.studentId;
 
