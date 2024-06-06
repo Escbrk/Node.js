@@ -3,7 +3,7 @@ import { MongooseError } from 'mongoose';
 
 export const errorHandlerMiddleware = (err, req, res, next) => {
   const statusCode = err.status;
-  // if (err instanceof HttpError) {
+
   if (isHttpError(err)) {
     return res.status(statusCode).json({
       status: statusCode,
