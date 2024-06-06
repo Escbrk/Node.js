@@ -1,17 +1,27 @@
 import { isHttpError } from 'http-errors';
+import { MongooseError } from 'mongoose';
 
 export const errorHandlerMiddleware = (err, req, res, next) => {
+  const statusCode = err.status;
   // if (err instanceof HttpError) {
   if (isHttpError(err)) {
-    const statusCode = err.status;
-
     return res.status(statusCode).json({
       status: statusCode,
       message: err.message,
     });
   }
 
-  return res.status(500).json({
+  if (err instanceof MongooseError) {
+    return res.status(500).json({
+      status: 500,
+      message: 'Mongoose error',
+      data: {
+        message: err.message,
+      },
+    });
+  }
+
+  res.status(500).json({
     status: 500,
     message: 'Interlan server error',
     data: {
