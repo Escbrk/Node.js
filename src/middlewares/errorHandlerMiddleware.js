@@ -23,7 +23,7 @@ export const errorHandlerMiddleware = (err, req, res, next) => {
 
   res.status(500).json({
     status: 500,
-    message: 'Interlan server error',
+    message: 'Internal server error',
     data: {
       message: err.message,
     },
