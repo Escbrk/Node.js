@@ -56,7 +56,7 @@ export const createStudentController = async (req, res) => {
 
   res.status(201).json({
     status: 201,
-    message: `Successfully created a student`,
+    message: 'Successfully created a student',
     data: student,
   });
 };
