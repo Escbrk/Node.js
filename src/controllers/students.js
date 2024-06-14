@@ -21,7 +21,7 @@ export const getStudentByIdController = async (req, res) => {
 
   res.json({
     status: 200,
-    message: `Successfully got a student with ID: "${id}"`,
+    message: `Successfully got a student with ID: ${id}`,
     data: student,
   });
 };
