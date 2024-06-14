@@ -9,6 +9,8 @@ import {
 } from '../controllers/students.js';
 import { ctrlWrapper } from '../middlewares/ctrlWrapper.js';
 import { validateMongoId } from '../middlewares/validateMongoId.js';
+import { validateBody } from '../middlewares/validateBody.js';
+import { createStudentSchema } from '../validation/createStudentSchema.js';
 
 const studentsRouter = Router();
 
@@ -21,7 +23,11 @@ studentsRouter.get(
   ctrlWrapper(getStudentByIdController),
 );
 
-studentsRouter.post('/students', ctrlWrapper(createStudentController));
+studentsRouter.post(
+  '/students',
+  validateBody(createStudentSchema),
+  ctrlWrapper(createStudentController),
+);
 
 studentsRouter.patch(
   '/students/:studentId',
