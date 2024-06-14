@@ -8,8 +8,11 @@ import {
   putStudentController,
 } from '../controllers/students.js';
 import { ctrlWrapper } from '../middlewares/ctrlWrapper.js';
+import { validateMongoId } from '../middlewares/validateMongoId.js';
 
 const studentsRouter = Router();
+
+studentsRouter.use('/students/:studentId', validateMongoId('studentId'));
 
 studentsRouter.get('/students', ctrlWrapper(getStudentsController));
 
