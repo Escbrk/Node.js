@@ -12,7 +12,7 @@ export const validateBody = (schema) => async (req, res, next) => {
 
     next(
       createHttpError(400, 'Bad request', {
-        error: errors,
+        errors,
       }),
     );
   }
