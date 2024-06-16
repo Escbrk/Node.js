@@ -9,7 +9,7 @@ const parseIntFilter = (unknown) => {
 const parseFloatFilter = (unknown) => {
   if (typeof unknown !== 'string') return;
   const parsedFloat = parseFloat(unknown);
-  if (Number.isNaN(parsedInt)) return;
+  if (Number.isNaN(parsedFloat)) return;
 
   return parsedFloat;
 };
