@@ -5,9 +5,21 @@ import {
   getStudentById,
   upsertStudent,
 } from '../services/students.js';
+import { parseFilters } from '../utils/parseFilters.js';
+import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 
 export const getStudentsController = async (req, res) => {
-  const students = await getAllStudents();
+  const { page, perPage } = parsePaginationParams(req.query);
+  const { sortBy, sortOrder } = req.query;
+  const filter = parseFilters(req.query);
+
+  const students = await getAllStudents({
+    page,
+    perPage,
+    sortBy,
+    sortOrder,
+    filter,
+  });
   res.json({
     status: 200,
     message: 'Successfully got all students',
@@ -21,33 +33,9 @@ export const getStudentByIdController = async (req, res) => {
 
   res.json({
     status: 200,
-    message: `Successfully got a student with ID: "${id}"`,
+    message: `Successfully got a student with ID: ${id}`,
     data: student,
   });
-
-  //   if (isValidObjectId(id)) {
-  //     try {
-  //       if (!student) {
-  //         return res.status(404).json({
-  //           status: 404,
-  //           message: `Student with ID: "${id}" not found!`,
-  //         });
-  //       }
-
-  //       return res.json({
-  //         status: 200,
-  //         message: `Successfully got a student with ID: "${id}"`,
-  //         data: student,
-  //       });
-  //     } catch (err) {
-  //       console.log(err);
-  //     }
-  //   }
-
-  //   return res.json({
-  //     status: 404,
-  //     message: `ID: "${id}" is not valid!`,
-  //   });
 };
 
 export const createStudentController = async (req, res) => {
