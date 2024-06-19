@@ -3,7 +3,9 @@ import { Session } from '../db/models/session.js';
 import { User } from '../db/models/user.js';
 
 export const authenticate = async (req, res, next) => {
-  const header = req.get('Authorization');
+
+  try {
+      const header = req.get('Authorization');
   if (!header) next(createHttpError(401, 'Auth header is not provided'));
 
   const [bearer, token] = header.split(' ');
@@ -26,4 +28,8 @@ export const authenticate = async (req, res, next) => {
 
   req.user = user;
   next();
+  } catch (error) {
+    next(error)
+  }
+
 };
