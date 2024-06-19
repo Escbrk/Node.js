@@ -11,4 +11,4 @@ const studentSchema = new Schema(
   { timestamps: true, versionKey: false },
 );
 
-export const Student = model('student', studentSchema);
+export const Student = model('students', studentSchema);

@@ -1,11 +1,12 @@
-import express, { application } from 'express';
+import express from 'express';
 import pino from 'pino-http';
 import cors from 'cors';
 import { env } from './utils/env.js';
 import { ENV_VARS } from './constants/index.js';
 import { errorHandlerMiddleware } from './middlewares/errorHandlerMiddleware.js';
 import { notFoundMiddleware } from './middlewares/notFoundMiddleware.js';
-import studentsRouter from './routers/students.js';
+import rootRouter from './routers/index.js';
+import cookieParser from 'cookie-parser';
 
 export const startServer = () => {
   const app = express();
@@ -25,8 +26,9 @@ export const startServer = () => {
     }),
   );
   app.use(cors());
+  app.use(cookieParser());
 
-  app.use(studentsRouter);
+  app.use(rootRouter);
 
   app.use('*', notFoundMiddleware);
 
