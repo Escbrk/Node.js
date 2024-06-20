@@ -19,7 +19,10 @@ export const getStudentsController = async (req, res) => {
     sortBy,
     sortOrder,
     filter,
+    userId: req.user._id,
+    role: req.user.role,
   });
+
   res.json({
     status: 200,
     message: 'Successfully got all students',
@@ -40,7 +43,7 @@ export const getStudentByIdController = async (req, res) => {
 
 export const createStudentController = async (req, res) => {
   const { body } = req;
-  const student = await createStudent(body);
+  const student = await createStudent(body, req.user._id);
 
   res.status(201).json({
     status: 201,

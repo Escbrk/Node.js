@@ -13,6 +13,7 @@ import { validateBody } from '../middlewares/validateBody.js';
 import { createStudentSchema } from '../validation/createStudentSchema.js';
 import { updateStudentSchema } from '../validation/updateStudentSchema.js';
 import { authenticate } from '../middlewares/authenticate.js';
+import { checkChildPermissions } from '../middlewares/checkChildPermissions.js';
 
 const studentsRouter = Router();
 
@@ -31,6 +32,8 @@ studentsRouter.post(
 
 studentsRouter.patch(
   '/:studentId',
+
+  checkChildPermissions('teacher', 'parent'),
   validateBody(updateStudentSchema),
   ctrlWrapper(patchStudentController),
 );
@@ -41,6 +44,10 @@ studentsRouter.put(
   ctrlWrapper(putStudentController),
 );
 
-studentsRouter.delete('/:studentId', ctrlWrapper(deleteStudentByIdController));
+studentsRouter.delete(
+  '/:studentId',
+  checkChildPermissions('teacher', 'parent'),
+  ctrlWrapper(deleteStudentByIdController),
+);
 
 export default studentsRouter;
