@@ -11,7 +11,7 @@ const createSession = () => {
     accessTokenValidUntil: Date.now() + 1000 * 60 * 15, // 15 mins
     refreshTokenValidUntil: Date.now() + 1000 * 60 * 60 * 24 * 7, // 7 days
   };
-};
+}
 
 export const createUser = async (payload) => {
   const hashedPassword = await bcrypt.hash(payload.password, 10);
