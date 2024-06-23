@@ -93,7 +93,9 @@ export const createStudent = async (payload, userId) => {
 };
 
 export const deleteStudentById = async (studentId) => {
-  await Student.findByIdAndDelete(studentId);
+  const student = await Student.findByIdAndDelete(studentId);
+  if (!student)
+    throw createHttpError(404, 'Student you want to delete was not found!');
 };
 
 export const upsertStudent = async (id, payload, options = {}) => {

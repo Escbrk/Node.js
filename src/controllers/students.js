@@ -8,7 +8,7 @@ import {
 import { parseFilters } from '../utils/parseFilters.js';
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 
-export const getStudentsController = async (req, res, next) => {
+export const getStudentsController = async (req, res) => {
   const { page, perPage } = parsePaginationParams(req.query);
   const { sortBy, sortOrder } = req.query;
   const filter = parseFilters(req.query);
@@ -52,8 +52,8 @@ export const createStudentController = async (req, res) => {
 };
 
 export const deleteStudentByIdController = async (req, res) => {
-  const id = req.params.studentId;
-  await deleteStudentById(id);
+  const { studentId } = req.params;
+  await deleteStudentById(studentId);
 
   res.status(204).send();
 };
