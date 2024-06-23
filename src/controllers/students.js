@@ -7,11 +7,13 @@ import {
 } from '../services/students.js';
 import { parseFilters } from '../utils/parseFilters.js';
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
+import { parseSortParams } from '../utils/parseSortParams.js';
 
 export const getStudentsController = async (req, res) => {
   const { page, perPage } = parsePaginationParams(req.query);
-  const { sortBy, sortOrder } = req.query;
+  const { sortBy, sortOrder } = parseSortParams(req.query);
   const filter = parseFilters(req.query);
+
 
   const students = await getAllStudents({
     page,

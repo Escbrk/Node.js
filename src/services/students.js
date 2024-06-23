@@ -3,8 +3,8 @@ import { Student } from '../db/models/student.js';
 
 const createPaginationInformation = (page, perPage, count) => {
   const totalPages = Math.ceil(count / perPage);
-  const hasPreviousPage = page > 1;
-  const hasNextPage = page < totalPages;
+  const hasPreviousPage = page > 1; //* page !== 1
+  const hasNextPage = page < totalPages; //* Boolean(page < totalPages);
 
   return {
     page,
@@ -114,3 +114,4 @@ export const upsertStudent = async (id, payload, options = {}) => {
     isNew: !rawResult?.lastErrorObject?.updatedExisting,
   };
 };
+
