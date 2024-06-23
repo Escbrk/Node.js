@@ -8,7 +8,7 @@ import {
 import { parseFilters } from '../utils/parseFilters.js';
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 
-export const getStudentsController = async (req, res) => {
+export const getStudentsController = async (req, res, next) => {
   const { page, perPage } = parsePaginationParams(req.query);
   const { sortBy, sortOrder } = req.query;
   const filter = parseFilters(req.query);
@@ -30,12 +30,12 @@ export const getStudentsController = async (req, res) => {
 };
 
 export const getStudentByIdController = async (req, res) => {
-  const id = req.params.studentId;
-  const student = await getStudentById(id);
+  const { studentId } = req.params;
+  const student = await getStudentById(studentId);
 
   res.json({
     status: 200,
-    message: `Successfully got a student with ID: ${id}`,
+    message: `Successfully got a student with ID: ${studentId}`,
     data: student,
   });
 };
