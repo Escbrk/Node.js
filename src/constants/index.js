@@ -5,3 +5,8 @@ export const ENV_VARS = {
   MONGODB_URL: 'MONGODB_URL',
   MONGODB_DB: 'MONGODB_DB',
 };
+
+export const TOKENS_PERION = {
+  FIFTEEN_MINUTES: 15 * 60 * 1000, // 15 mins
+  SEVEN_DAYS: 1000 * 60 * 60 * 24 * 7, // 7 days
+};

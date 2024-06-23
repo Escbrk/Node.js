@@ -1,15 +1,16 @@
 import createHttpError from 'http-errors';
 import { User } from '../db/models/user.js';
 import bcrypt from 'bcrypt';
-import crypto from 'crypto';
+import { randomBytes } from 'crypto';
 import { Session } from '../db/models/session.js';
+import { TOKENS_PERION } from '../constants/index.js';
 
 const createSession = () => {
   return {
-    accessToken: crypto.randomBytes(40).toString('base64'),
-    refreshToken: crypto.randomBytes(40).toString('base64'),
-    accessTokenValidUntil: Date.now() + 1000 * 60 * 15, // 15 mins
-    refreshTokenValidUntil: Date.now() + 1000 * 60 * 60 * 24 * 7, // 7 days
+    accessToken: randomBytes(40).toString('base64'),
+    refreshToken: randomBytes(40).toString('base64'),
+    accessTokenValidUntil: Date.now() + TOKENS_PERION.FIFTEEN_MINUTES,
+    refreshTokenValidUntil: Date.now() + TOKENS_PERION.SEVEN_DAYS,
   };
 };
 
@@ -39,13 +40,6 @@ export const loginUser = async ({ email, password }) => {
   });
 };
 
-export const logoutUser = async ({ sessionId, sessionToken }) => {
-  return await Session.deleteOne({
-    _id: sessionId,
-    refreshToken: sessionToken,
-  });
-};
-
 export const refreshSession = async ({ res, sessionId, sessionToken }) => {
   const session = await Session.findOne({
     _id: sessionId,
@@ -68,6 +62,13 @@ export const refreshSession = async ({ res, sessionId, sessionToken }) => {
   return await Session.create({
     userId: user.id,
     ...createSession(),
+  });
+};
+
+export const logoutUser = async ({ sessionId, sessionToken }) => {
+  return await Session.deleteOne({
+    _id: sessionId,
+    refreshToken: sessionToken,
   });
 };
 
