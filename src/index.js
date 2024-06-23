@@ -5,3 +5,9 @@ import { startServer } from './server.js';
   await initMongoConnection();
   startServer();
 })();
+
+// const bootstrap = async () => {
+//   await initMongoConnection();
+//   startServer();
+// };
+// bootstrap();
