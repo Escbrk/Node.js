@@ -5,7 +5,7 @@ import { ROLES } from '../constants/index.js';
 export const checkRoles =
   (...roles) =>
   async (req, res, next) => {
-    const { user } = req.user;
+    const { user } = req;
     const { studentId } = req.params;
 
     if (roles.includes(ROLES.TEACHER) && user.role === ROLES.TEACHER)
@@ -19,4 +19,5 @@ export const checkRoles =
 
       if (!student) return next(createHttpError(403, 'Access error'));
     }
+    return next();
   };
