@@ -1,15 +1,19 @@
 import createHttpError from 'http-errors';
 import { User } from '../db/models/user.js';
 import bcrypt from 'bcrypt';
-import crypto from 'crypto';
+import { randomBytes } from 'crypto';
 import { Session } from '../db/models/session.js';
+import { SMTP, TOKENS_PERION } from '../constants/index.js';
+import jwt from 'jsonwebtoken';
+import { env } from '../utils/env.js';
+import { sendEmail } from '../utils/sendMail.js';
 
 const createSession = () => {
   return {
-    accessToken: crypto.randomBytes(40).toString('base64'),
-    refreshToken: crypto.randomBytes(40).toString('base64'),
-    accessTokenValidUntil: Date.now() + 1000 * 60 * 15, // 15 mins
-    refreshTokenValidUntil: Date.now() + 1000 * 60 * 60 * 24 * 7, // 7 days
+    accessToken: randomBytes(40).toString('base64'),
+    refreshToken: randomBytes(40).toString('base64'),
+    accessTokenValidUntil: Date.now() + TOKENS_PERION.FIFTEEN_MINUTES,
+    refreshTokenValidUntil: Date.now() + TOKENS_PERION.SEVEN_DAYS,
   };
 }
 
@@ -28,21 +32,14 @@ export const loginUser = async ({ email, password }) => {
   const user = await User.findOne({ email });
   if (!user) throw createHttpError(404, 'User not found!');
 
-  const areEqual = await bcrypt.compare(password, user.password);
-  if (!areEqual) throw createHttpError(401, 'Unautorized');
+  const isEqual = await bcrypt.compare(password, user.password);
+  if (!isEqual) throw createHttpError(401, 'Unautorized');
 
   await Session.deleteOne({ userId: user.id });
 
   return await Session.create({
     userId: user.id,
     ...createSession(),
-  });
-};
-
-export const logoutUser = async ({ sessionId, sessionToken }) => {
-  return await Session.deleteOne({
-    _id: sessionId,
-    refreshToken: sessionToken,
   });
 };
 
@@ -69,4 +66,33 @@ export const refreshSession = async ({ res, sessionId, sessionToken }) => {
     userId: user.id,
     ...createSession(),
   });
+};
+
+export const logoutUser = async ({ sessionId, sessionToken }) => {
+  return await Session.deleteOne({
+    _id: sessionId,
+    refreshToken: sessionToken,
+  });
+};
+
+export const requestResetToken = async (email) => {
+  const user = await User.findOne({ email });
+  if (!user) throw createHttpError(404, 'User not found!');
+
+  const resetToken = jwt.sign({
+    sub: user._id,
+    email,
+  }, {
+    // env('JWT_SECRET'),
+  }, {
+    expiresIn: '15m'
+  });
+
+  await sendEmail({
+    from: env(SMTP.SMTP_FROM),
+    to: email,
+    subject: 'Reset your password',
+    html: `<p>Click <a href="${resetToken}">here</a> to reset your password</p>`
+  })
+
 };

@@ -13,7 +13,8 @@ import { validateBody } from '../middlewares/validateBody.js';
 import { createStudentSchema } from '../validation/createStudentSchema.js';
 import { updateStudentSchema } from '../validation/updateStudentSchema.js';
 import { authenticate } from '../middlewares/authenticate.js';
-import { checkChildPermissions } from '../middlewares/checkChildPermissions.js';
+import { checkRoles } from '../middlewares/checkRoles.js';
+import { ROLES } from '../constants/index.js';
 
 const studentsRouter = Router();
 
@@ -22,7 +23,11 @@ studentsRouter.use('/', authenticate);
 
 studentsRouter.get('/', ctrlWrapper(getStudentsController));
 
-studentsRouter.get('/:studentId', ctrlWrapper(getStudentByIdController));
+studentsRouter.get(
+  '/:studentId',
+  checkRoles(ROLES.TEACHER, ROLES.PARENT),
+  ctrlWrapper(getStudentByIdController),
+);
 
 studentsRouter.post(
   '/',
@@ -32,14 +37,14 @@ studentsRouter.post(
 
 studentsRouter.patch(
   '/:studentId',
-
-  checkChildPermissions('teacher', 'parent'),
+  checkRoles(ROLES.TEACHER, ROLES.PARENT),
   validateBody(updateStudentSchema),
   ctrlWrapper(patchStudentController),
 );
 
 studentsRouter.put(
   '/:studentId',
+  checkRoles(ROLES.TEACHER, ROLES.PARENT),
   validateBody(createStudentSchema),
   ctrlWrapper(putStudentController),
 );

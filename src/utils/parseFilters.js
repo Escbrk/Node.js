@@ -25,12 +25,13 @@ const parseBoolenFilter = (unknown) => {
 };
 
 export const parseFilters = (query) => {
+  const { gender, maxAge, minAge, maxAvgMark, minAvgMark, onDuty } = query;
   return {
-    minAge: parseIntFilter(query.minAge),
-    maxAge: parseIntFilter(query.maxAge),
-    minAvgMark: parseFloatFilter(query.minAvgMark),
-    maxAvgMark: parseFloatFilter(query.maxAvgMark),
-    gender: parseGenderFilter(query.gender),
-    onDuty: parseBoolenFilter(query.onDuty),
+    minAge: parseIntFilter(minAge),
+    maxAge: parseIntFilter(maxAge),
+    minAvgMark: parseFloatFilter(minAvgMark),
+    maxAvgMark: parseFloatFilter(maxAvgMark),
+    gender: parseGenderFilter(gender),
+    onDuty: parseBoolenFilter(onDuty),
   };
 };

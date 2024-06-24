@@ -1,10 +1,11 @@
 import createHttpError from 'http-errors';
 import { Student } from '../db/models/student.js';
+import { ROLES } from '../constants/index.js';
 
 const createPaginationInformation = (page, perPage, count) => {
   const totalPages = Math.ceil(count / perPage);
-  const hasPreviousPage = page > 1;
-  const hasNextPage = page < totalPages;
+  const hasPreviousPage = page > 1; //* page !== 1
+  const hasNextPage = page < totalPages; //* Boolean(page < totalPages);
 
   return {
     page,
@@ -22,6 +23,8 @@ export const getAllStudents = async ({
   sortBy = '_id',
   sortOrder = 'asc',
   filter = {},
+  userId,
+  role,
   userId,
   role,
 }) => {
@@ -47,8 +50,8 @@ export const getAllStudents = async ({
   if (typeof filter.onDuty === 'boolean') {
     studentsFilters.where('onDuty').equals(filter.onDuty);
   }
-  
-  if (role !== 'teacher') {
+
+  if (role !== ROLES.TEACHER) {
     studentsFilters.where('parentId').equals(userId);
   }
 
@@ -76,11 +79,17 @@ export const getAllStudents = async ({
   };
 };
 
-export const getStudentById = async (id) => {
-  const student = await Student.findById(id);
+export const getStudentById = async (id, userId, role) => {
+  let student;
+
+  if (role !== ROLES.TEACHER) {
+    student = await Student.findOne(id).where('parentId').equals(userId);
+  } else {
+    student = await Student.findById(id);
+  }
 
   if (!student) {
-    throw createHttpError(404, 'Student not found!');
+    throw createHttpError(403, 'Access error!');
   }
 
   return student;
@@ -88,12 +97,16 @@ export const getStudentById = async (id) => {
 
 export const createStudent = async (payload, userId) => {
   const student = await Student.create({ ...payload, parentId: userId });
+export const createStudent = async (payload, userId) => {
+  const student = await Student.create({ ...payload, parentId: userId });
 
   return student;
 };
 
 export const deleteStudentById = async (studentId) => {
-  await Student.findByIdAndDelete(studentId);
+  const student = await Student.findByIdAndDelete(studentId);
+  if (!student)
+    throw createHttpError(404, 'Student you want to delete was not found!');
 };
 
 export const upsertStudent = async (id, payload, options = {}) => {
