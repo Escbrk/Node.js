@@ -77,8 +77,14 @@ export const getAllStudents = async ({
   };
 };
 
-export const getStudentById = async (id) => {
-  const student = await Student.findById(id);
+export const getStudentById = async (id, userId, role) => {
+  let student;
+
+  if (role !== ROLES.TEACHER) {
+    student = await Student.findOne(id).where('parentId').equals(userId);
+  } else {
+    student = await Student.findById(id);
+  }
 
   if (!student) {
     throw createHttpError(404, 'Student not found!');

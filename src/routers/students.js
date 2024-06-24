@@ -23,7 +23,11 @@ studentsRouter.use('/', authenticate);
 
 studentsRouter.get('/', ctrlWrapper(getStudentsController));
 
-studentsRouter.get('/:studentId', ctrlWrapper(getStudentByIdController));
+studentsRouter.get(
+  '/:studentId',
+  checkRoles(ROLES.TEACHER, ROLES.PARENT),
+  ctrlWrapper(getStudentByIdController),
+);
 
 studentsRouter.post(
   '/',
@@ -40,7 +44,7 @@ studentsRouter.patch(
 
 studentsRouter.put(
   '/:studentId',
- checkRoles(ROLES.TEACHER, ROLES.PARENT),
+  checkRoles(ROLES.TEACHER, ROLES.PARENT),
   validateBody(createStudentSchema),
   ctrlWrapper(putStudentController),
 );

@@ -34,7 +34,7 @@ export const getStudentsController = async (req, res) => {
 
 export const getStudentByIdController = async (req, res) => {
   const { studentId } = req.params;
-  const student = await getStudentById(studentId);
+  const student = await getStudentById(studentId, req.user._id, req.user.role);
 
   res.json({
     status: 200,
