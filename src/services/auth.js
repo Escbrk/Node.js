@@ -3,7 +3,10 @@ import { User } from '../db/models/user.js';
 import bcrypt from 'bcrypt';
 import { randomBytes } from 'crypto';
 import { Session } from '../db/models/session.js';
-import { TOKENS_PERION } from '../constants/index.js';
+import { SMTP, TOKENS_PERION } from '../constants/index.js';
+import jwt from 'jsonwebtoken';
+import { env } from '../utils/env.js';
+import { sendEmail } from '../utils/sendMail.js';
 
 const createSession = () => {
   return {
@@ -72,11 +75,24 @@ export const logoutUser = async ({ sessionId, sessionToken }) => {
   });
 };
 
-// export const updatePassword = async (payload) => {
-//   const hashedPassword = await bcrypt.hash(payload.password, 10);
-//   const user = User.findByIdAndUpdate(id, hashedPassword);
+export const requestResetToken = async (email) => {
+  const user = await User.findOne({ email });
+  if (!user) throw createHttpError(404, 'User not found!');
 
-//   return {
-//     user,
-//   };
-// };
+  const resetToken = jwt.sign({
+    sub: user._id,
+    email,
+  }, {
+    // env('JWT_SECRET'),
+  }, {
+    expiresIn: '15m'
+  });
+
+  await sendEmail({
+    from: env(SMTP.SMTP_FROM),
+    to: email,
+    subject: 'Reset your password',
+    html: `<p>Click <a href="${resetToken}">here</a> to reset your password</p>`
+  })
+
+};
