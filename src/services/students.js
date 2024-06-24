@@ -97,10 +97,11 @@ export const getStudentById = async (id, userId, role) => {
 
 export const createStudent = async (payload, userId) => {
   const student = await Student.create({ ...payload, parentId: userId });
-export const createStudent = async (payload, userId) => {
-  const student = await Student.create({ ...payload, parentId: userId });
+  export const createStudent = async (payload, userId) => {
+    const student = await Student.create({ ...payload, parentId: userId });
 
-  return student;
+    return student;
+  };
 };
 
 export const deleteStudentById = async (studentId) => {
