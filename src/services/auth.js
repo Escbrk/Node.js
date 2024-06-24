@@ -3,7 +3,7 @@ import { User } from '../db/models/user.js';
 import bcrypt from 'bcrypt';
 import { randomBytes } from 'crypto';
 import { Session } from '../db/models/session.js';
-import { SMTP, TOKENS_PERION } from '../constants/index.js';
+import { ENV_VARS, TOKENS_PERION } from '../constants/index.js';
 import jwt from 'jsonwebtoken';
 import { env } from '../utils/env.js';
 import { sendEmail } from '../utils/sendMail.js';
@@ -93,7 +93,7 @@ export const requestResetToken = async (email) => {
   );
 
   await sendEmail({
-    from: env(SMTP.SMTP_FROM),
+    from: env(ENV_VARS.SMTP_FROM),
     to: email,
     subject: 'Reset your password',
     html: `<p>Click <a href="${resetToken}">here</a> to reset your password</p>`,
