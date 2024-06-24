@@ -1,5 +1,6 @@
 import createHttpError from 'http-errors';
 import { Student } from '../db/models/student.js';
+import { ROLES } from '../constants/index.js';
 
 const createPaginationInformation = (page, perPage, count) => {
   const totalPages = Math.ceil(count / perPage);
@@ -48,7 +49,7 @@ export const getAllStudents = async ({
     studentsFilters.where('onDuty').equals(filter.onDuty);
   }
 
-  if (role !== 'teacher') {
+  if (role !== ROLES.TEACHER) {
     studentsFilters.where('parentId').equals(userId);
   }
 
@@ -114,4 +115,3 @@ export const upsertStudent = async (id, payload, options = {}) => {
     isNew: !rawResult?.lastErrorObject?.updatedExisting,
   };
 };
-

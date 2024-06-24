@@ -14,6 +14,7 @@ import { createStudentSchema } from '../validation/createStudentSchema.js';
 import { updateStudentSchema } from '../validation/updateStudentSchema.js';
 import { authenticate } from '../middlewares/authenticate.js';
 import { checkRoles } from '../middlewares/checkRoles.js';
+import { ROLES } from '../constants/index.js';
 
 const studentsRouter = Router();
 
@@ -32,14 +33,14 @@ studentsRouter.post(
 
 studentsRouter.patch(
   '/:studentId',
-  checkRoles('teacher', 'parent'),
+  checkRoles(ROLES.TEACHER, ROLES.PARENT),
   validateBody(updateStudentSchema),
   ctrlWrapper(patchStudentController),
 );
 
 studentsRouter.put(
   '/:studentId',
-  checkRoles('teacher', 'parent'),
+ checkRoles(ROLES.TEACHER, ROLES.PARENT),
   validateBody(createStudentSchema),
   ctrlWrapper(putStudentController),
 );
