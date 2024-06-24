@@ -87,7 +87,7 @@ export const getStudentById = async (id, userId, role) => {
   }
 
   if (!student) {
-    throw createHttpError(404, 'Student not found!');
+    throw createHttpError(403, 'Access error!');
   }
 
   return student;
