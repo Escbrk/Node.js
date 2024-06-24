@@ -49,6 +49,10 @@ studentsRouter.put(
   ctrlWrapper(putStudentController),
 );
 
-studentsRouter.delete('/:studentId', ctrlWrapper(deleteStudentByIdController));
+studentsRouter.delete(
+  '/:studentId',
+  checkChildPermissions('teacher', 'parent'),
+  ctrlWrapper(deleteStudentByIdController),
+);
 
 export default studentsRouter;

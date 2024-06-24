@@ -25,6 +25,8 @@ export const getAllStudents = async ({
   filter = {},
   userId,
   role,
+  userId,
+  role,
 }) => {
   const skip = perPage * (page - 1);
 
@@ -93,6 +95,8 @@ export const getStudentById = async (id, userId, role) => {
   return student;
 };
 
+export const createStudent = async (payload, userId) => {
+  const student = await Student.create({ ...payload, parentId: userId });
 export const createStudent = async (payload, userId) => {
   const student = await Student.create({ ...payload, parentId: userId });
 

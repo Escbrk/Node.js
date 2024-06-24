@@ -25,6 +25,7 @@ export const getStudentsController = async (req, res) => {
     userId: req.user._id,
     role: req.user.role,
   });
+
   res.json({
     status: 200,
     message: 'Successfully got all students',
