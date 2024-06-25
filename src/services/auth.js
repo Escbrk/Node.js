@@ -7,6 +7,9 @@ import { ENV_VARS, TOKENS_PERION } from '../constants/index.js';
 import jwt from 'jsonwebtoken';
 import { env } from '../utils/env.js';
 import { sendEmail } from '../utils/sendMail.js';
+import Handlebars from 'handlebars';
+import fs from 'node:fs/promises';
+import path from 'node:path';
 
 const createSession = () => {
   return {
@@ -90,17 +93,24 @@ export const requestResetToken = async (email) => {
     },
   );
 
+
+  const templateSource = await fs.readFile(
+    path.join('src', 'templates', 'send-reset-password-email.html'),
+  );
+
+  const template = Handlebars.compile(templateSource.toString());
+
+  const html = template({
+    name: user.name,
+    link: `${env(ENV_VARS.FRONTEND_HOST)}/reset-password?token=${resetToken}`,
+  });
+
   try {
     await sendEmail({
       from: env(ENV_VARS.SMTP_FROM),
       to: email,
       subject: 'Reset your password',
-      html: `
-          <h1>Hello!</h1>
-          <p>Click <a href="${env(
-            ENV_VARS.FRONTEND_HOST,
-          )}/reset-password?token=${resetToken}}">here</a> to reset your password</p>
-                `,
+      html,
     });
   } catch (err) {
     console.log(err);
