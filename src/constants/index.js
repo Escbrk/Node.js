@@ -7,8 +7,8 @@ export const ENV_VARS = {
 };
 
 export const TOKENS_PERION = {
-  FIFTEEN_MINUTES: 15 * 60 * 1000, // 15 mins
-  SEVEN_DAYS: 1000 * 60 * 60 * 24 * 7, // 7 days
+  FIFTEEN_MINUTES:Date.now() + 15 * 60 * 1000, // 15 mins
+  SEVEN_DAYS: Date.now() + 1000 * 60 * 60 * 24 * 7, // 7 days
 };
 
 export const ROLES = {
