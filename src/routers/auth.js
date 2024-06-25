@@ -12,7 +12,6 @@ import { registerUserSchema } from '../validation/registerUserSchema.js';
 import { validateBody } from '../middlewares/validateBody.js';
 import { loginUserSchema } from '../validation/loginSchemaValidator.js';
 import { requestResetEmailSchema } from '../validation/requestResetEmailSchema.js';
-import { resetPassword } from '../services/auth.js';
 import { resetPasswordSchema } from '../validation/resetPasswordSchema.js';
 
 const authRouter = Router();
