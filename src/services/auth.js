@@ -108,3 +108,22 @@ export const requestResetToken = async (email) => {
     throw createHttpError(500, 'Problem with sending emails');
   }
 };
+
+export const resetPassword = async ({ token, password }) => {
+  let tokenPayload;
+  try {
+    tokenPayload = jwt.verify(token, env(ENV_VARS.JWT_SECRET));
+  } catch (error) {
+    throw createHttpError(401, error.message);
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  await User.findOneAndUpdate(
+    {
+      _id: tokenPayload.sub,
+      email: tokenPayload.email,
+    },
+    { password: hashedPassword },
+  );
+};
