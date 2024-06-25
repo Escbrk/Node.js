@@ -81,7 +81,7 @@ export const getStudentById = async (studentId, userId, role) => {
   let student;
 
   if (role !== ROLES.TEACHER) {
-    student = await Student.findOne({ _id: studentId });
+    student = await Student.findOne({ _id: studentId, userId });
   } else {
     student = await Student.findById({ _id: studentId });
   }
