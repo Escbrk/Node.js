@@ -77,13 +77,13 @@ export const getAllStudents = async ({
   };
 };
 
-export const getStudentById = async (id, userId, role) => {
+export const getStudentById = async (studentId, userId, role) => {
   let student;
 
   if (role !== ROLES.TEACHER) {
-    student = await Student.findOne(id).where('parentId').equals(userId);
+    student = await Student.findOne({ _id: studentId });
   } else {
-    student = await Student.findById(id);
+    student = await Student.findById({ _id: studentId });
   }
 
   if (!student) {
@@ -105,8 +105,8 @@ export const deleteStudentById = async (studentId) => {
     throw createHttpError(404, 'Student you want to delete was not found!');
 };
 
-export const upsertStudent = async (id, payload, options = {}) => {
-  const rawResult = await Student.findByIdAndUpdate(id, payload, {
+export const upsertStudent = async (studentId, payload, options = {}) => {
+  const rawResult = await Student.findByIdAndUpdate(studentId, payload, {
     new: true,
     includeResultMetadata: true,
     ...options,
