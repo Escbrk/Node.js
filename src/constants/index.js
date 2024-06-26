@@ -24,12 +24,13 @@ export const ENV_VARS = {
     CLOUD_NAME: 'CLOUD_NAME',
     API_KEY: 'API_KEY',
     API_SECRET: 'API_SECRET',
+    IS_CLOUDINARY_ENABLED: 'IS_CLOUDINARY_ENABLED',
   },
 };
 
 export const TOKENS_PERION = {
-  FIFTEEN_MINUTES: Date.now() + 15 * 60 * 1000, // 15 mins
-  SEVEN_DAYS: Date.now() + 1000 * 60 * 60 * 24 * 7, // 7 days
+  MINUTES_30: Date.now() + 30 * 60 * 1000, // 30 mins
+  DAYS_7: Date.now() + 1000 * 60 * 60 * 24 * 7, // 7 days
 };
 
 export const ROLES = {
@@ -42,5 +43,3 @@ export const DIRECTORIES = {
   TEMP_UPLOAD_DIR: path.join(process.cwd(), 'temp'),
   UPLOAD_DIR: path.join(process.cwd(), 'upload'),
 };
-
-export const IS_CLOUDINARY_ENABLED = 'IS_CLOUDINARY_ENABLED';

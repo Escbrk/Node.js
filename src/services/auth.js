@@ -15,8 +15,8 @@ const createSession = () => {
   return {
     accessToken: randomBytes(40).toString('base64'),
     refreshToken: randomBytes(40).toString('base64'),
-    accessTokenValidUntil: TOKENS_PERION.FIFTEEN_MINUTES,
-    refreshTokenValidUntil: TOKENS_PERION.SEVEN_DAYS,
+    accessTokenValidUntil: TOKENS_PERION.MINUTES_30,
+    refreshTokenValidUntil: TOKENS_PERION.DAYS_7,
   };
 };
 
