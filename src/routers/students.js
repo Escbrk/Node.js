@@ -41,6 +41,7 @@ studentsRouter.post(
 studentsRouter.patch(
   '/:studentId',
   checkRoles(ROLES.TEACHER, ROLES.PARENT),
+  upload.single('avatar'),
   validateBody(updateStudentSchema),
   ctrlWrapper(patchStudentController),
 );
@@ -48,6 +49,7 @@ studentsRouter.patch(
 studentsRouter.put(
   '/:studentId',
   checkRoles(ROLES.TEACHER, ROLES.PARENT),
+  upload.single('avatar'),
   validateBody(createStudentSchema),
   ctrlWrapper(putStudentController),
 );

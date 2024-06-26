@@ -1,7 +1,6 @@
 import createHttpError from 'http-errors';
 import { Student } from '../db/models/student.js';
 import { ROLES } from '../constants/index.js';
-import { saveToClaudinary } from '../utils/saveToClaudinary.js';
 import { saveFile } from '../utils/saveFile.js';
 
 const createPaginationInformation = (page, perPage, count) => {
@@ -113,12 +112,22 @@ export const deleteStudentById = async (studentId) => {
     throw createHttpError(404, 'Student you want to delete was not found!');
 };
 
-export const upsertStudent = async (studentId, payload, options = {}) => {
-  const rawResult = await Student.findByIdAndUpdate(studentId, payload, {
-    new: true,
-    includeResultMetadata: true,
-    ...options,
-  });
+export const upsertStudent = async (
+  studentId,
+  { avatar, ...payload },
+  options = {},
+) => {
+  const url = await saveFile(avatar);
+
+  const rawResult = await Student.findByIdAndUpdate(
+    studentId,
+    { ...payload, avatarUrl: url },
+    {
+      new: true,
+      includeResultMetadata: true,
+      ...options,
+    },
+  );
 
   if (!rawResult || !rawResult.value) {
     throw createHttpError(404, 'Student not found!');
