@@ -1,7 +1,8 @@
 import createHttpError from 'http-errors';
 import { Student } from '../db/models/student.js';
 import { ROLES } from '../constants/index.js';
-import { saveFileToLocalMachine } from '../utils/saveFileToLocalMachine.js';
+import { saveToClaudinary } from '../utils/saveToClaudinary.js';
+import { saveFile } from '../utils/saveFile.js';
 
 const createPaginationInformation = (page, perPage, count) => {
   const totalPages = Math.ceil(count / perPage);
@@ -95,7 +96,7 @@ export const getStudentById = async (studentId, userId, role) => {
 };
 
 export const createStudent = async ({ avatar, ...payload }, userId) => {
-  const url = saveFileToLocalMachine(avatar);
+  const url = await saveFile(avatar);
 
   const student = await Student.create({
     ...payload,

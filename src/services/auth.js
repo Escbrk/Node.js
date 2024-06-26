@@ -3,7 +3,7 @@ import { User } from '../db/models/user.js';
 import bcrypt from 'bcrypt';
 import { randomBytes } from 'crypto';
 import { Session } from '../db/models/session.js';
-import { ENV_VARS, TOKENS_PERION } from '../constants/index.js';
+import { DIRECTORIES, ENV_VARS, TOKENS_PERION } from '../constants/index.js';
 import jwt from 'jsonwebtoken';
 import { env } from '../utils/env.js';
 import { sendEmail } from '../utils/sendMail.js';
@@ -93,16 +93,15 @@ export const requestResetToken = async (email) => {
     },
   );
 
-
   const templateSource = await fs.readFile(
-    path.join('src', 'templates', 'send-reset-password-email.html'),
+    path.join(DIRECTORIES.TEMPLATE_DIR, 'send-reset-password-email.html'),
   );
 
   const template = Handlebars.compile(templateSource.toString());
 
   const html = template({
     name: user.name,
-    link: `${env(ENV_VARS.FRONTEND_HOST)}/reset-password?token=${resetToken}`,
+    link: `${env(ENV_VARS.HOST.FRONTEND_HOST)}/reset-password?token=${resetToken}`,
   });
 
   try {

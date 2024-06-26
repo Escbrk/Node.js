@@ -15,7 +15,16 @@ export const ENV_VARS = {
 
   JWT_SECRET: 'JWT_SECRET',
 
-  FRONTEND_HOST: 'FRONTEND_HOST',
+  HOST: {
+    FRONTEND_HOST: 'FRONTEND_HOST',
+    BACKEND_HOST: 'BACKEND_HOST',
+  },
+
+  CLAUDINARY: {
+    CLOUD_NAME: 'CLOUD_NAME',
+    API_KEY: 'API_KEY',
+    API_SECRET: 'API_SECRET',
+  },
 };
 
 export const TOKENS_PERION = {
@@ -28,5 +37,10 @@ export const ROLES = {
   PARENT: 'parent',
 };
 
-export const TEMP_UPLOAD_DIR = path.join(process.cwd(), 'temp');
-export const UPLOAD_DIR = path.join(process.cwd(), 'upload');
+export const DIRECTORIES = {
+  TEMPLATE_DIR: path.join(process.cwd(), 'src', 'templates'),
+  TEMP_UPLOAD_DIR: path.join(process.cwd(), 'temp'),
+  UPLOAD_DIR: path.join(process.cwd(), 'upload'),
+};
+
+export const IS_CLOUDINARY_ENABLED = 'IS_CLOUDINARY_ENABLED';
