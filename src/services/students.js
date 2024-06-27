@@ -94,12 +94,12 @@ export const getStudentById = async (studentId, userId, role) => {
   return student;
 };
 
-export const createStudent = async ({ avatar, ...payload }, userId) => {
+export const createStudent = async ({ avatar, ...payload }, parentId) => {
   const url = await saveFile(avatar);
 
   const student = await Student.create({
     ...payload,
-    parentId: userId,
+    parentId,
     avatarUrl: url,
   });
 
@@ -120,7 +120,7 @@ export const upsertStudent = async (
   const url = await saveFile(avatar);
 
   const rawResult = await Student.findByIdAndUpdate(
-    studentId,
+    { _id: studentId },
     { ...payload, avatarUrl: url },
     {
       new: true,

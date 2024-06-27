@@ -6,7 +6,7 @@ import fs from 'node:fs/promises';
 cloudinary.config({
   cloud_name: env(ENV_VARS.CLAUDINARY.CLOUD_NAME),
   api_key: env(ENV_VARS.CLAUDINARY.API_KEY),
-  api_secret: env(ENV_VARS.CLAUDINARY.API_SECRET), // Click 'View Credentials' below to copy your API secret
+  api_secret: env(ENV_VARS.CLAUDINARY.API_SECRET),
 });
 
 export const saveToClaudinary = async (file) => {
