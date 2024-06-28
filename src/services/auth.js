@@ -141,5 +141,42 @@ export const resetPassword = async ({ token, password }) => {
 };
 
 export const loginOrSignupWithGoogleOAuth = async (code) => {
-  return await validateGoogleOAuthCode(code);
+  const payload = await validateGoogleOAuthCode(code);
+  if (!payload) throw createHttpError(401);
+
+  let user = await User.findOne({ email: payload.email });
+
+  if (!user) {
+    const hashedPassword = await bcrypt.hash(
+      randomBytes(20).toString('base64'),
+      10,
+    );
+    user = await User.create({
+      name: payload.given_name,
+      email: payload.email,
+      password: hashedPassword,
+    });
+  }
+
+  await Session.deleteOne({
+    userId: user._id,
+  });
+
+  return await Session.create({
+    userId: user._id,
+    ...createSession(),
+  });
 };
+
+//             "iss": "https://accounts.google.com",
+//             "azp": "376410167936-pnq80c523b9kvme4lveluc729ji30noh.apps.googleusercontent.com",
+//             "aud": "376410167936-pnq80c523b9kvme4lveluc729ji30noh.apps.googleusercontent.com",
+//             "sub": "117536160510451901866",
+//             "email": "pahancheg777@gmail.com",
+//             "email_verified": true,
+//             "at_hash": "Gn8pxMssqFBjSs6M4dNB4Q",
+//             "name": "PahancheG",
+//             "picture": "https://lh3.googleusercontent.com/a/ACg8ocJ88K-GSsglA_-aiU_ECfCesjRSmBlhYz265BWR17rQN39Y-dQ=s96-c",
+//             "given_name": "PahancheG",
+//             "iat": 1719614631,
+//             "exp": 1719618231

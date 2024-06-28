@@ -29,8 +29,7 @@ export const validateGoogleOAuthCode = async (code) => {
     const idToken = tokens.id_token;
 
     if (!idToken) throw createHttpError(401);
-    return client.verifyIdToken({ idToken });
-    
+    return (await client.verifyIdToken({ idToken })).getPayload();
   } catch (err) {
     console.log(err);
     throw createHttpError(500, 'Error during google OAuth authorization');
