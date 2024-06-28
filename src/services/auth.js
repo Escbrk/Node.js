@@ -10,6 +10,7 @@ import { sendEmail } from '../utils/sendMail.js';
 import Handlebars from 'handlebars';
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { validateGoogleOAuthCode } from '../utils/googleOAuth.js';
 
 const createSession = () => {
   return {
@@ -101,7 +102,9 @@ export const requestResetToken = async (email) => {
 
   const html = template({
     name: user.name,
-    link: `${env(ENV_VARS.HOST.FRONTEND_HOST)}/reset-password?token=${resetToken}`,
+    link: `${env(
+      ENV_VARS.HOST.FRONTEND_HOST,
+    )}/reset-password?token=${resetToken}`,
   });
 
   try {
@@ -135,4 +138,8 @@ export const resetPassword = async ({ token, password }) => {
     },
     { password: hashedPassword },
   );
+};
+
+export const loginOrSignupWithGoogleOAuth = async (code) => {
+  return await validateGoogleOAuthCode(code);
 };

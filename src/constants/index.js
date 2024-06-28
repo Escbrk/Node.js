@@ -26,10 +26,17 @@ export const ENV_VARS = {
     API_SECRET: 'API_SECRET',
     IS_CLOUDINARY_ENABLED: 'IS_CLOUDINARY_ENABLED',
   },
+
+  GOOGLE_AUTH: {
+    CLIENT_ID: 'CLIENT_ID',
+    CLIENT_SECRET: 'CLIENT_SECRET',
+    TOKEN_URI: 'TOKEN_URI',
+    PROJECT_ID: 'PROJECT_ID',
+  },
 };
 
 export const TOKENS_PERION = {
-  MINUTES_30: Date.now() + 30 * 60 * 1000, // 30 mins
+  MINUTES_30: Date.now() + 100 * 60 * 30, // 30 mins
   DAYS_7: Date.now() + 1000 * 60 * 60 * 24 * 7, // 7 days
 };
 
