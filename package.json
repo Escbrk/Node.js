@@ -7,13 +7,16 @@
   "scripts": {
     "lint": "eslint src/**/*.js",
     "start": "node ./src/index.js",
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon src/index.js",
+    "preview-docs": "redocly preview-docs",
+    "build-docs": "redocly bundle --ext json -o docs/swagger.json"
   },
   "keywords": [],
   "author": "Alexander Repeta <a.repeta@goit.global>",
   "license": "ISC",
   "devDependencies": {
     "@eslint/js": "^9.2.0",
+    "@redocly/cli": "^1.16.0",
     "eslint": "^9.2.0",
     "globals": "^15.1.0",
     "nodemon": "^3.1.0",
