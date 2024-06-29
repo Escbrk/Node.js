@@ -151,8 +151,15 @@ export const loginOrSignupWithGoogleOAuth = async (code) => {
       randomBytes(20).toString('base64'),
       10,
     );
+
+    let fullName = 'Guest';
+    if (payload.given_name && payload.family_name) {
+      fullName = `${payload.given_name} ${payload.family_name}`;
+    } else {
+      fullName = payload.given_name;
+    }
     user = await User.create({
-      name: payload.given_name,
+      name: fullName,
       email: payload.email,
       password: hashedPassword,
     });
