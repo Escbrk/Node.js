@@ -28,7 +28,7 @@ requestBody:
           gender:
             description: "Student's age"
             type: string
-            enum: ['male', 'female', 'other']
+            enum: ['male', 'female']
           avgMark:
             description: "Student's average mark. Should be between 1 and 12"
             type: number

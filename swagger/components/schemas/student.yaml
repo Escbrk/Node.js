@@ -6,6 +6,8 @@ required:
   - gender
   - avgMark
   - onDuty
+  # - parentId
+  # - photo
 properties:
   _id:
     description: "Student's id"
@@ -33,9 +35,15 @@ properties:
     example: false
   parentId:
     description: "Student's parent id"
-    type: string
-    example: 65e4decdd286b30065d54af9
+    oneOf:
+      - type: string
+        example: 65e4decdd286b30065d54af9
+      - type: 'null'
+        example: null
   photo:
     description: "Link to student's photo"
-    type: string
-    example: <https://res.cloudinary.com/uqwgdu/image/upload/image.png>
+    oneOf:
+      - type: string
+        example: <https://res.cloudinary.com/uqwgdu/image/upload/image.png>
+      - type: 'null'
+        example: null

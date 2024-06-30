@@ -11,10 +11,10 @@
   },
   "servers": [
     {
-      "url": "<http://localhost:3000>"
+      "url": "http://localhost:3001"
     },
     {
-      "url": "<https://example.com/api/v1>"
+      "url": "https://example.com/api/v1"
     }
   ],
   "tags": [
@@ -118,8 +118,7 @@
               "type": "string",
               "enum": [
                 "male",
-                "female",
-                "other"
+                "female"
               ],
               "example": "male"
             }
@@ -240,8 +239,7 @@
                     "type": "string",
                     "enum": [
                       "male",
-                      "female",
-                      "other"
+                      "female"
                     ]
                   },
                   "avgMark": {
@@ -420,13 +418,29 @@
           },
           "parentId": {
             "description": "Student's parent id",
-            "type": "string",
-            "example": "65e4decdd286b30065d54af9"
+            "oneOf": [
+              {
+                "type": "string",
+                "example": "65e4decdd286b30065d54af9"
+              },
+              {
+                "type": "null",
+                "example": null
+              }
+            ]
           },
           "photo": {
             "description": "Link to student's photo",
-            "type": "string",
-            "example": "<https://res.cloudinary.com/uqwgdu/image/upload/image.png>"
+            "oneOf": [
+              {
+                "type": "string",
+                "example": "<https://res.cloudinary.com/uqwgdu/image/upload/image.png>"
+              },
+              {
+                "type": "null",
+                "example": null
+              }
+            ]
           }
         }
       }

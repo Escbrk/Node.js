@@ -52,7 +52,7 @@ parameters:
     name: gender
     schema:
       type: string
-      enum: ['male', 'female', 'other']
+      enum: ['male', 'female']
       example: male
 responses:
   '200':
