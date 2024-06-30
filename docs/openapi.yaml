@@ -21,6 +21,8 @@ paths:
       $ref: ../swagger/paths/students/get.yaml
     post:
       $ref: ../swagger/paths/students/post.yaml
+    put:
+      $ref: ../swagger/paths/students/put.yaml
   /students/{id}:
     get:
       $ref: ../swagger/paths/students/{id}/get.yaml
