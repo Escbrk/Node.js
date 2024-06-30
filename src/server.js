@@ -7,6 +7,7 @@ import { errorHandlerMiddleware } from './middlewares/errorHandlerMiddleware.js'
 import { notFoundMiddleware } from './middlewares/notFoundMiddleware.js';
 import rootRouter from './routers/index.js';
 import cookieParser from 'cookie-parser';
+import { swaggerDocs } from './middlewares/swaggerDocs.js';
 
 export const startServer = () => {
   const app = express();
@@ -27,6 +28,8 @@ export const startServer = () => {
   );
 
   app.use('/uploads', express.static(DIRECTORIES.UPLOAD_DIR));
+
+  app.use('/api-docs', swaggerDocs());
 
   app.use(cors());
   app.use(cookieParser());

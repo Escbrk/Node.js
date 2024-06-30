@@ -50,3 +50,5 @@ export const DIRECTORIES = {
   TEMP_UPLOAD_DIR: path.join(process.cwd(), 'temp'),
   UPLOAD_DIR: path.join(process.cwd(), 'upload'),
 };
+
+export const SWAGGER_PATH = path.join(process.cwd(), 'docs', 'swagger.json');
